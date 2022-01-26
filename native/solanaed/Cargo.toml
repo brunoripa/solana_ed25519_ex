@@ -1,0 +1,15 @@
+[package]
+name = "solanaed"
+version = "0.1.0"
+authors = []
+edition = "2018"
+
+[lib]
+name = "solanaed"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.23.0"
+rand = "0.7"
+ed25519-dalek = "1.0.1"

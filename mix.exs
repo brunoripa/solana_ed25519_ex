@@ -1,4 +1,4 @@
-defmodule SolanaEd25519.MixProject do
+defmodule SolanaED.MixProject do
   use Mix.Project
 
   def project do

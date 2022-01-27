@@ -1,17 +1,25 @@
 extern crate rand;
 extern crate ed25519_dalek;
 
-use rand::rngs::OsRng;
-use ed25519_dalek::Keypair;
-// use rustler::NifReturnable;
+use rustler::{NifResult, NifStruct};
 
-#[rustler::nif]
-fn generate() -> Keypair {
-    let mut csprng: OsRng = OsRng::new().unwrap();
-    // the trait `Encoder` is not implemented for `Keypair`
-    // Maybe this must be somehow serialized to be returned ?
-    // Or myabe wrapped in `NifReturnable` ?
-    return Keypair::generate(&mut csprng);
+rustler::atoms! { error, ok, }
+
+// Needed to map to the Elixir struct - failing the correct name means
+// you will be finding a generic struct in Elixir:
+// like: `%{__struct__: <WrongName>, value: 1}`
+#[derive(NifStruct)]
+#[module = "SolanaED.CustomStruct"]
+struct MyStruct {
+    value: i32
 }
 
-rustler::init!("Elixir.SolanaED", [generate]);
+#[rustler::nif]
+fn hello() -> NifResult<MyStruct> {
+    let ret_value = MyStruct { value: 1 };
+
+    Ok(ret_value)
+}
+
+
+rustler::init!("Elixir.SolanaED", [hello]);
